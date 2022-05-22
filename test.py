@@ -13,7 +13,7 @@ from pandas_datareader import data as pdr
 # override yfinance with pandas – seems to be a common step
 
 
-def ectract_data():
+def taking_data():
     yf.pdr_override()
     # Get stock data from Yahoo Finance – here, asking for about 10 years of Amazon
     today = date.today()
@@ -51,10 +51,10 @@ def ectract_data():
         
     return data
 
-def calculation_EC2(history,shots,sigal):
+def val_EC2(history,shots,sigal):
     val=[]
     elp=time.time()
-    exct_data=ectract_data()
+    exct_data=taking_data()
     minhistory = history
     shots = shots
     for i in range(minhistory, len(exct_data)): 
@@ -80,4 +80,4 @@ def calculation_EC2(history,shots,sigal):
     
     
     
-sys.stdout.write(calculation_EC2(int(sys.argv[1]),int(sys.argv[2]),int(sys.argv[3])))
+sys.stdout.write(val_EC2(int(sys.argv[1]),int(sys.argv[2]),int(sys.argv[3])))
