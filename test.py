@@ -54,13 +54,13 @@ def taking_data():
 def val_EC2(history,shots,sigal):
     val=[]
     elp=time.time()
-    exct_data=taking_data()
+    take_data=taking_data()
     minhistory = history
     shots = shots
     for i in range(minhistory, len(exct_data)): 
         if exct_data.Buy[i]==1: # if we’re interested in Buy signals
-                mean=exct_data.Close[i-minhistory:i].pct_change(1).mean()
-                std=exct_data.Close[i-minhistory:i].pct_change(1).std()
+                mean=take_data.Close[i-minhistory:i].pct_change(1).mean()
+                std=take_data.Close[i-minhistory:i].pct_change(1).std()
                 # generate much larger random number series with same broad characteristics 
                 simulated = [random.gauss(mean,std) for x in range(shots)]
                 # sort and pick 95% and 99%  - not distinguishing long/short here
@@ -68,7 +68,7 @@ def val_EC2(history,shots,sigal):
                 var95 = simulated[int(len(simulated)*0.95)]
                 var99 = simulated[int(len(simulated)*0.99)]
 
-                #print(var95, var99) # so you can see what is being produced
+                
                 val.append([str(exct_data['Date'][i]),var95, var99])
     elp_time=str(time.time() - elp)
     
