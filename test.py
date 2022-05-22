@@ -13,7 +13,7 @@ from pandas_datareader import data as pdr
 # override yfinance with pandas – seems to be a common step
 
 
-def ectract_data():
+def taking_data():
     yf.pdr_override()
     # Get stock data from Yahoo Finance – here, asking for about 10 years of Amazon
     today = date.today()
@@ -51,16 +51,16 @@ def ectract_data():
         
     return data
 
-def calculation_EC2(history,shots,sigal):
+def val_EC2(history,shots,sigal):
     val=[]
     elp=time.time()
-    exct_data=ectract_data()
+    the_data=taking_data()
     minhistory = history
     shots = shots
     for i in range(minhistory, len(exct_data)): 
-        if exct_data.Buy[i]==1: # if we’re interested in Buy signals
-                mean=exct_data.Close[i-minhistory:i].pct_change(1).mean()
-                std=exct_data.Close[i-minhistory:i].pct_change(1).std()
+        if the_data.Buy[i]==1: # if we’re interested in Buy signals
+                mean=the_data.Close[i-minhistory:i].pct_change(1).mean()
+                std=the_data.Close[i-minhistory:i].pct_change(1).std()
                 # generate much larger random number series with same broad characteristics 
                 simulated = [random.gauss(mean,std) for x in range(shots)]
                 # sort and pick 95% and 99%  - not distinguishing long/short here
@@ -80,4 +80,4 @@ def calculation_EC2(history,shots,sigal):
     
     
     
-sys.stdout.write(calculation_EC2(int(sys.argv[1]),int(sys.argv[2]),int(sys.argv[3])))
+sys.stdout.write(val_EC2(int(sys.argv[1]),int(sys.argv[2]),int(sys.argv[3])))
