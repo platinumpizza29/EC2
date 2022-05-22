@@ -13,7 +13,7 @@ from pandas_datareader import data as pdr
 # override yfinance with pandas – seems to be a common step
 
 
-def taking_data():
+def ectract_data():
     yf.pdr_override()
     # Get stock data from Yahoo Finance – here, asking for about 10 years of Amazon
     today = date.today()
@@ -51,16 +51,16 @@ def taking_data():
         
     return data
 
-def val_EC2(history,shots,sigal):
+def calculation_EC2(history,shots,sigal):
     val=[]
     elp=time.time()
-    take_data=taking_data()
+    exct_data=ectract_data()
     minhistory = history
     shots = shots
     for i in range(minhistory, len(exct_data)): 
         if exct_data.Buy[i]==1: # if we’re interested in Buy signals
-                mean=take_data.Close[i-minhistory:i].pct_change(1).mean()
-                std=take_data.Close[i-minhistory:i].pct_change(1).std()
+                mean=exct_data.Close[i-minhistory:i].pct_change(1).mean()
+                std=exct_data.Close[i-minhistory:i].pct_change(1).std()
                 # generate much larger random number series with same broad characteristics 
                 simulated = [random.gauss(mean,std) for x in range(shots)]
                 # sort and pick 95% and 99%  - not distinguishing long/short here
@@ -68,7 +68,7 @@ def val_EC2(history,shots,sigal):
                 var95 = simulated[int(len(simulated)*0.95)]
                 var99 = simulated[int(len(simulated)*0.99)]
 
-                
+                #print(var95, var99) # so you can see what is being produced
                 val.append([str(exct_data['Date'][i]),var95, var99])
     elp_time=str(time.time() - elp)
     
@@ -80,4 +80,4 @@ def val_EC2(history,shots,sigal):
     
     
     
-sys.stdout.write(val_EC2(int(sys.argv[1]),int(sys.argv[2]),int(sys.argv[3])))
+sys.stdout.write(calculation_EC2(int(sys.argv[1]),int(sys.argv[2]),int(sys.argv[3])))
